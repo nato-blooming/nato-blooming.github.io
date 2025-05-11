@@ -4,7 +4,7 @@ export const SITE = {
 	// Your site's detail?
 	title: "うしくさんぽノート",
 	name: "うしくさんぽノート",
-	description: "歩く、牛久。",
+	description: "有志による非公式の牛久市観光サイトです。",
 	url: "https://astro-ink.vercel.app",
 	githubUrl: "https://github.com/nato-blooming/nato-blooming.github.io",
 	listDrafts: true,
