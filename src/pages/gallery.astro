@@ -9,24 +9,19 @@ const photos = allPhotos.map(p => ({
 }));
 ---
 
-<section id="gallery" class="gallery-grid"></section>
+<!-- ギャラリーセクション：Tailwindグリッド -->
+<section id="gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4"></section>
 
-<script
-  type="application/json"
-  is:inline
-  set:html={JSON.stringify(photos)}
-  id="photo-data"
-></script>
+<!-- JSONデータ埋め込み（is:inline + set:html）-->
+<script 
+  type="application/json" 
+  is:inline 
+  set:html={JSON.stringify(photos)} 
+  id="photo-data">
+</script>
 
+<!-- クライアントJS -->
 <script type="module">
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
     const raw = document.getElementById("photo-data")?.textContent;
     if (!raw) {
@@ -34,19 +29,27 @@ const photos = allPhotos.map(p => ({
       return;
     }
 
-    const photos = JSON.parse(raw);
-    const shuffled = shuffle(photos).slice(0, 8); // 任意で表示数制限
+    // シャッフル関数
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const photos = shuffle(JSON.parse(raw)); // ランダム表示
     const container = document.getElementById("gallery");
 
-    shuffled.forEach(photo => {
+    photos.forEach(photo => {
       const a = document.createElement("a");
       a.href = `/photo_pages/${photo.slug}`;
-      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition";
+      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition aspect-[3/2]";
 
       const img = document.createElement("img");
       img.src = photo.image;
       img.alt = photo.title || "ギャラリー写真";
-      img.className = "w-full h-48 object-cover";
+      img.className = "w-full h-full object-cover";
 
       a.appendChild(img);
       container.appendChild(a);
