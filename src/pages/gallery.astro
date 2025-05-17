@@ -1,5 +1,11 @@
 ---
+export const prerender = true;
+
 import { getCollection } from 'astro:content';
+import DefaultPageLayout from '$/layouts/default.astro';
+
+const title = 'ギャラリー';
+const description = '牛久の写真をランダムで表示します。リロードすると画像が変わります。';
 
 const allPhotos = await getCollection('photo_pages');
 const photos = allPhotos.map(p => ({
@@ -8,51 +14,56 @@ const photos = allPhotos.map(p => ({
   title: p.data.title
 }));
 ---
+<DefaultPageLayout content={{ title, description }}>
+  <section id="gallery" class="gallery-grid"></section>
 
-<!-- ギャラリーセクション：Tailwindグリッド -->
-<section id="gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4"></section>
+  <!-- JSONデータ埋め込み -->
+  <script 
+    type="application/json" 
+    is:inline 
+    set:html={JSON.stringify(photos)} 
+    id="photo-data">
+  </script>
 
-<!-- JSONデータ埋め込み（is:inline + set:html）-->
-<script 
-  type="application/json" 
-  is:inline 
-  set:html={JSON.stringify(photos)} 
-  id="photo-data">
-</script>
-
-<!-- クライアントJS -->
-<script type="module">
-  document.addEventListener("DOMContentLoaded", () => {
-    const raw = document.getElementById("photo-data")?.textContent;
-    if (!raw) {
-      console.error("photo-data not found or empty");
-      return;
-    }
-
-    // シャッフル関数
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      const raw = document.getElementById("photo-data")?.textContent;
+      if (!raw) {
+        console.error("photo-data not found or empty");
+        return;
       }
-      return array;
-    }
 
-    const photos = shuffle(JSON.parse(raw)); // ランダム表示
-    const container = document.getElementById("gallery");
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
 
-    photos.forEach(photo => {
-      const a = document.createElement("a");
-      a.href = `/photo_pages/${photo.slug}`;
-      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition aspect-[3/2]";
+      const photos = shuffle(JSON.parse(raw)).slice(0, 8); // ランダム8件
+      const container = document.getElementById("gallery");
 
-      const img = document.createElement("img");
-      img.src = photo.image;
-      img.alt = photo.title || "ギャラリー写真";
-      img.className = "w-full h-full object-cover";
+      photos.forEach(photo => {
+        const a = document.createElement("a");
+        a.href = `/photo_pages/${photo.slug}`;
+        a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition aspect-[3/2]";
 
-      a.appendChild(img);
-      container.appendChild(a);
+        const img = document.createElement("img");
+        img.src = photo.image;
+        img.alt = photo.title || "ギャラリー写真";
+        img.className = "w-full h-full object-cover";
+
+        a.appendChild(img);
+        container.appendChild(a);
+      });
     });
-  });
-</script>
+  </script>
+
+  <style>
+    .gallery-grid {
+      @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4;
+    }
+  </style>
+</DefaultPageLayout>
+
