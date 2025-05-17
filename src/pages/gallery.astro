@@ -1,49 +1,55 @@
 ---
-import DefaultPageLayout from '$/layouts/default.astro'
-import { getCollection } from 'astro:content'
-
-const title = 'ギャラリー';
-const description = '牛久の写真をランダムで表示します。リロードすると画像が変わります。';
+import { getCollection } from 'astro:content';
 
 const allPhotos = await getCollection('photo_pages');
+const photos = allPhotos.map(p => ({
+  slug: p.slug,
+  image: p.data.image,
+  title: p.data.title
+}));
 ---
 
-<DefaultPageLayout content={{ title, description }}>
-  <section id="gallery" class="gallery-grid">
-    <!-- クライアント側でレンダリング -->
-  </section>
+<section id="gallery" class="gallery-grid"></section>
 
-  <script type="application/json" id="all-photos-data">
-    {JSON.stringify(allPhotos.map(photo => ({
-      slug: photo.slug,
-      image: photo.data.image,
-      title: photo.data.title
-    })))}
-  </script>
+<script
+  type="application/json"
+  is:inline
+  set:html={JSON.stringify(photos)}
+  id="photo-data"
+></script>
 
-  <script type="module">
-    const photos = JSON.parse(document.getElementById('all-photos-data').textContent);
-    const shuffled = photos.sort(() => Math.random() - 0.5).slice(0, 8);
+<script type="module">
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
-    const container = document.getElementById('gallery');
-    for (const photo of shuffled) {
-      const a = document.createElement('a');
+  document.addEventListener("DOMContentLoaded", () => {
+    const raw = document.getElementById("photo-data")?.textContent;
+    if (!raw) {
+      console.error("photo-data not found or empty");
+      return;
+    }
+
+    const photos = JSON.parse(raw);
+    const shuffled = shuffle(photos).slice(0, 8); // 任意で表示数制限
+    const container = document.getElementById("gallery");
+
+    shuffled.forEach(photo => {
+      const a = document.createElement("a");
       a.href = `/photo_pages/${photo.slug}`;
-      a.className = 'block overflow-hidden rounded shadow hover:shadow-lg transition';
+      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition";
 
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = photo.image;
-      img.alt = photo.title || 'ギャラリー写真';
-      img.className = 'w-full h-48 object-cover';
+      img.alt = photo.title || "ギャラリー写真";
+      img.className = "w-full h-48 object-cover";
 
       a.appendChild(img);
       container.appendChild(a);
-    }
-  </script>
-</DefaultPageLayout>
-
-<style>
-  .gallery-grid {
-    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4;
-  }
-</style>
+    });
+  });
+</script>
