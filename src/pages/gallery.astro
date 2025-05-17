@@ -1,18 +1,37 @@
 ---
 export const prerender = true
 
-import { getCollection, getEntryBySlug } from 'astro:content'
+import { getCollection } from 'astro:content'
 import DefaultPageLayout from '$/layouts/default.astro'
-import PostPreviewList from '$/components/PostPreviewList.astro'
-import Prose from '$/components/Prose.astro'
-import { Content as AboutAstroInk } from './_astro-ink.md'
 
 const title = 'ギャラリー';
-const description = '牛久の写真です。';
----
-<DefaultPageLayout content={{ title, description }}>
+const description = '牛久の写真をランダムで表示します。リロードすると画像が変わります。';
 
-    工事中です...
- 
+const allPhotos = await getCollection('photo_pages');
+
+// ランダムで8件取得
+const randomPhotos = [...allPhotos]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 8);
+---
+
+<DefaultPageLayout content={{ title, description }}>
+  <section class="gallery-grid">
+    {randomPhotos.map(photo => (
+      <a href={`/photo_pages/${photo.slug}`} class="block overflow-hidden rounded shadow hover:shadow-lg transition">
+        <img
+          src={photo.data.image}
+          alt={photo.data.title || 'ギャラリー写真'}
+          class="w-full h-48 object-cover"
+        />
+      </a>
+    ))}
+  </section>
 </DefaultPageLayout>
+
+<style>
+  .gallery-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4;
+  }
+</style>
 

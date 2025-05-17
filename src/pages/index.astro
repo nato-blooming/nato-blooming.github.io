@@ -31,36 +31,55 @@ const description = 'ようこそ！'
     </div>
 
     <!-- モデルコース -->
-    <div class="card">
+    <a href="/course" class="card block no-underline">
       <div class="card-content">
         <div class="card__icon">🐾</div>
         <h3 class="card_name">モデルコース</h3>
         <p class="sub_sentence">おすすめルートを紹介。<br>牛久の魅力を巡ろう！</p>
       </div>
-      <a class="linkbtn mt-3" href="/course">見る →</a>
-    </div>
+      <div class="linkbtn mt-3">見る →</div>
+    </a>
+
+    <!-- 旅のTips -->
+    <a href="/tips" class="card opacity-50">
+      <div class="card-content">
+        <div class="card__icon">💡</div>
+        <h3 class="card_name">豆知識</h3>
+        <p class="sub_sentence">牛久に関する豆知識を紹介。</p>
+      </div>
+      <div class="linkbtn mt-3">見る →</div>
+    </a>
 
     <!-- ギャラリー -->
-    <div class="card opacity-60">
+    <a href="/gallery" class="card">
       <div class="card-content">
         <div class="card__icon">📷</div>
         <h3 class="card_name">ギャラリー</h3>
-        <p class="sub_sentence">日常・景色写真<br>（準備中）</p>
+        <p class="sub_sentence">日常・景色写真</p>
       </div>
-      <!--
-      <a class="linkbtn mt-3" href="/course">見る →</a>
-      -->
-    </div>
+      <div class="linkbtn mt-3">見る →</div>
+    </a>
 
     <!-- リンク集 -->
-    <div class="card">
+    <a href="/links" class="card">
       <div class="card-content">
         <div class="card__icon">🔗</div>
         <h3 class="card_name">リンク集</h3>
         <p class="sub_sentence">外部サイトまとめ</p>
       </div>
-      <a class="linkbtn mt-3" href="/links">見る →</a>
-    </div>
+      <div class="linkbtn mt-3">見る →</div>
+    </a>
+
+    <!-- その他 -->
+    <a href="/othres" class="card opacity-50">
+      <div class="card-content">
+        <div class="card__icon">🛈️</div>
+        <h3 class="card_name">その他</h3>
+        <p class="sub_sentence">このブログについてなど。</p>
+      </div>
+      <div class="linkbtn mt-3">見る →</div>
+    </a>
+
   </div>
 </section>
 
@@ -76,7 +95,10 @@ const description = 'ようこそ！'
   }
 
   .card {
-    @apply justify-between p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-800 flex flex-col items-center text-center;
+    @apply justify-between p-3 
+        border border-gray-300 dark:border-gray-600 rounded-md 
+        bg-gray-200 dark:bg-gray-700 
+        flex flex-col items-center text-center;
   }
 
   .card__icon {
@@ -88,11 +110,11 @@ const description = 'ようこそ！'
   }
 
   .subbtn {
-    @apply w-full bg-blue-600 text-white text-base rounded px-[0.25rem] py-0.5 text-center hover:bg-blue-700;
+    @apply w-full bg-purple-600 text-white text-base rounded px-[0.25rem] py-0.5 text-center hover:bg-purple-700;
   }
 
   .linkbtn {
-    @apply mt-auto self-end text-blue-500 hover:underline block mt-2 text-sm;
+    @apply text-base mt-auto self-end text-purple-500 hover:underline block mt-2 text-sm;
   }
 
   .card_name {
