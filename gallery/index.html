@@ -1,12 +1,4 @@
-<!DOCTYPE html><section id="gallery" class="gallery-grid"></section> <script type="application/json" id="photo-data">[{"slug":"bakudoh","image":"/images/photos/bakudoh.jpg"},{"slug":"dipika-lunch","image":"/images/photos/dipika-lunch.jpg"},{"slug":"dipika-saag_curry","image":"/images/photos/dipika-saag_curry.jpg"},{"slug":"dot_bagel-entrance","image":"/images/photos/dot_bagel-entrance.jpg"},{"slug":"fushimi-menu","image":"/images/photos/fushimi-menu.jpg"},{"slug":"fushimi","image":"/images/photos/fushimi.jpg"},{"slug":"hearthbrow-menu","image":"/images/photos/hearthbrow-menu.jpg"},{"slug":"hearthbrow","image":"/images/photos/hearthbrow.jpg"},{"slug":"imosen-emosaku_sign","image":"/images/photos/imosen-emosaku_sign.jpg"},{"slug":"lola-lunch","image":"/images/photos/lola-lunch.jpg"},{"slug":"lola-signboard","image":"/images/photos/lola-signboard.jpg"},{"slug":"men_shizuku-menu","image":"/images/photos/men_shizuku-menu.jpg"},{"slug":"men_shizuku-menu2","image":"/images/photos/men_shizuku-menu2.jpg"},{"slug":"men_shizuku-sign","image":"/images/photos/men_shizuku-sign.jpg"},{"slug":"miso_joh-ramen","image":"/images/photos/miso_joh-ramen.jpg"},{"slug":"miso_joh-sign","image":"/images/photos/miso_joh-sign.jpg"},{"slug":"newtakara-a","image":"/images/photos/newtakara-a.jpg"},{"slug":"newtakara-lunch","image":"/images/photos/newtakara-lunch.jpg"},{"slug":"numamoto-cake","image":"/images/photos/numamoto-cake.jpg"},{"slug":"numamoto-menu-trimmed","image":"/images/photos/numamoto-menu-trimmed.jpg"},{"slug":"numamoto-sign2","image":"/images/photos/numamoto-sign2.jpg"},{"slug":"ramen-shop_menu","image":"/images/photos/ramen-shop_menu.jpg"},{"slug":"ramen-shop_sign","image":"/images/photos/ramen-shop_sign.jpg"},{"slug":"tenshino_oyatsu-madeleine","image":"/images/photos/tenshino_oyatsu-madeleine.jpg"},{"slug":"tenshino_oyatsu-sign","image":"/images/photos/tenshino_oyatsu-sign.jpg"},{"slug":"tentasu-menu1","image":"/images/photos/tentasu-menu1.jpg"},{"slug":"tentasu-menu2","image":"/images/photos/tentasu-menu2.jpg"},{"slug":"tentasu-sign","image":"/images/photos/tentasu-sign.jpg"},{"slug":"yamaokaya-history","image":"/images/photos/yamaokaya-history.jpg"},{"slug":"yamaokaya","image":"/images/photos/yamaokaya.jpg"}]</script> <script type="module">
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
+<!DOCTYPE html><!-- ギャラリーセクション：Tailwindグリッド --><section id="gallery" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4"></section> <!-- JSONデータ埋め込み（is:inline + set:html）--> <script type="application/json" id="photo-data">[{"slug":"bakudoh","image":"/images/photos/bakudoh.jpg"},{"slug":"dipika-lunch","image":"/images/photos/dipika-lunch.jpg"},{"slug":"dipika-saag_curry","image":"/images/photos/dipika-saag_curry.jpg"},{"slug":"dot_bagel-entrance","image":"/images/photos/dot_bagel-entrance.jpg"},{"slug":"fushimi-menu","image":"/images/photos/fushimi-menu.jpg"},{"slug":"fushimi","image":"/images/photos/fushimi.jpg"},{"slug":"hearthbrow-menu","image":"/images/photos/hearthbrow-menu.jpg"},{"slug":"hearthbrow","image":"/images/photos/hearthbrow.jpg"},{"slug":"imosen-emosaku_sign","image":"/images/photos/imosen-emosaku_sign.jpg"},{"slug":"lola-lunch","image":"/images/photos/lola-lunch.jpg"},{"slug":"lola-signboard","image":"/images/photos/lola-signboard.jpg"},{"slug":"men_shizuku-menu","image":"/images/photos/men_shizuku-menu.jpg"},{"slug":"men_shizuku-menu2","image":"/images/photos/men_shizuku-menu2.jpg"},{"slug":"men_shizuku-sign","image":"/images/photos/men_shizuku-sign.jpg"},{"slug":"miso_joh-ramen","image":"/images/photos/miso_joh-ramen.jpg"},{"slug":"miso_joh-sign","image":"/images/photos/miso_joh-sign.jpg"},{"slug":"newtakara-a","image":"/images/photos/newtakara-a.jpg"},{"slug":"newtakara-lunch","image":"/images/photos/newtakara-lunch.jpg"},{"slug":"numamoto-cake","image":"/images/photos/numamoto-cake.jpg"},{"slug":"numamoto-menu-trimmed","image":"/images/photos/numamoto-menu-trimmed.jpg"},{"slug":"numamoto-sign2","image":"/images/photos/numamoto-sign2.jpg"},{"slug":"ramen-shop_menu","image":"/images/photos/ramen-shop_menu.jpg"},{"slug":"ramen-shop_sign","image":"/images/photos/ramen-shop_sign.jpg"},{"slug":"tenshino_oyatsu-madeleine","image":"/images/photos/tenshino_oyatsu-madeleine.jpg"},{"slug":"tenshino_oyatsu-sign","image":"/images/photos/tenshino_oyatsu-sign.jpg"},{"slug":"tentasu-menu1","image":"/images/photos/tentasu-menu1.jpg"},{"slug":"tentasu-menu2","image":"/images/photos/tentasu-menu2.jpg"},{"slug":"tentasu-sign","image":"/images/photos/tentasu-sign.jpg"},{"slug":"yamaokaya-history","image":"/images/photos/yamaokaya-history.jpg"},{"slug":"yamaokaya","image":"/images/photos/yamaokaya.jpg"}]</script> <!-- クライアントJS --> <script type="module">
   document.addEventListener("DOMContentLoaded", () => {
     const raw = document.getElementById("photo-data")?.textContent;
     if (!raw) {
@@ -14,19 +6,27 @@
       return;
     }
 
-    const photos = JSON.parse(raw);
-    const shuffled = shuffle(photos).slice(0, 8); // 任意で表示数制限
+    // シャッフル関数
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const photos = shuffle(JSON.parse(raw)); // ランダム表示
     const container = document.getElementById("gallery");
 
-    shuffled.forEach(photo => {
+    photos.forEach(photo => {
       const a = document.createElement("a");
       a.href = `/photo_pages/${photo.slug}`;
-      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition";
+      a.className = "block overflow-hidden rounded shadow hover:shadow-lg transition aspect-[3/2]";
 
       const img = document.createElement("img");
       img.src = photo.image;
       img.alt = photo.title || "ギャラリー写真";
-      img.className = "w-full h-48 object-cover";
+      img.className = "w-full h-full object-cover";
 
       a.appendChild(img);
       container.appendChild(a);
