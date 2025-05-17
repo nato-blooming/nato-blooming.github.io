@@ -1,32 +1,45 @@
 ---
-export const prerender = true
-
-import { getCollection } from 'astro:content'
 import DefaultPageLayout from '$/layouts/default.astro'
+import { getCollection } from 'astro:content'
 
 const title = 'ギャラリー';
 const description = '牛久の写真をランダムで表示します。リロードすると画像が変わります。';
 
 const allPhotos = await getCollection('photo_pages');
-
-// ランダムで8件取得
-const randomPhotos = [...allPhotos]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 8);
 ---
 
 <DefaultPageLayout content={{ title, description }}>
-  <section class="gallery-grid">
-    {randomPhotos.map(photo => (
-      <a href={`/photo_pages/${photo.slug}`} class="block overflow-hidden rounded shadow hover:shadow-lg transition">
-        <img
-          src={photo.data.image}
-          alt={photo.data.title || 'ギャラリー写真'}
-          class="w-full h-48 object-cover"
-        />
-      </a>
-    ))}
+  <section id="gallery" class="gallery-grid">
+    <!-- クライアント側でレンダリング -->
   </section>
+
+  <script type="application/json" id="all-photos-data">
+    {JSON.stringify(allPhotos.map(photo => ({
+      slug: photo.slug,
+      image: photo.data.image,
+      title: photo.data.title
+    })))}
+  </script>
+
+  <script type="module">
+    const photos = JSON.parse(document.getElementById('all-photos-data').textContent);
+    const shuffled = photos.sort(() => Math.random() - 0.5).slice(0, 8);
+
+    const container = document.getElementById('gallery');
+    for (const photo of shuffled) {
+      const a = document.createElement('a');
+      a.href = `/photo_pages/${photo.slug}`;
+      a.className = 'block overflow-hidden rounded shadow hover:shadow-lg transition';
+
+      const img = document.createElement('img');
+      img.src = photo.image;
+      img.alt = photo.title || 'ギャラリー写真';
+      img.className = 'w-full h-48 object-cover';
+
+      a.appendChild(img);
+      container.appendChild(a);
+    }
+  </script>
 </DefaultPageLayout>
 
 <style>
@@ -34,4 +47,3 @@ const randomPhotos = [...allPhotos]
     @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4;
   }
 </style>
-
