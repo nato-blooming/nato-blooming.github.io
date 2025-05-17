@@ -19,7 +19,7 @@ const description = 'ようこそ！'
     <!-- 観光・グルメ -->
     <div class="card">
       <div class="card-content">
-        <div class="card__icon">📍</div>
+        <img src="icon/top/spots.svg" class="card__icon" />
         <h3 class="card_name">観光・グルメ</h3>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-2 text-sm">
@@ -33,7 +33,7 @@ const description = 'ようこそ！'
     <!-- モデルコース -->
     <a href="/course" class="card block no-underline">
       <div class="card-content">
-        <div class="card__icon">🐾</div>
+        <img src="icon/top/course.svg" class="card__icon" />
         <h3 class="card_name">モデルコース</h3>
         <p class="sub_sentence">おすすめルートを紹介。<br>牛久の魅力を巡ろう！</p>
       </div>
@@ -43,7 +43,7 @@ const description = 'ようこそ！'
     <!-- 旅のTips -->
     <a href="/tips" class="card opacity-50">
       <div class="card-content">
-        <div class="card__icon">💡</div>
+        <img src="icon/top/tips.svg" class="card__icon" />
         <h3 class="card_name">豆知識</h3>
         <p class="sub_sentence">牛久に関する豆知識を紹介。</p>
       </div>
@@ -53,7 +53,7 @@ const description = 'ようこそ！'
     <!-- ギャラリー -->
     <a href="/gallery" class="card">
       <div class="card-content">
-        <div class="card__icon">📷</div>
+        <img src="icon/top/gallarey.svg" class="card__icon" />
         <h3 class="card_name">ギャラリー</h3>
         <p class="sub_sentence">日常・景色写真</p>
       </div>
@@ -63,7 +63,7 @@ const description = 'ようこそ！'
     <!-- リンク集 -->
     <a href="/links" class="card">
       <div class="card-content">
-        <div class="card__icon">🔗</div>
+        <img src="icon/top/links.svg" class="card__icon" />
         <h3 class="card_name">リンク集</h3>
         <p class="sub_sentence">外部サイトまとめ</p>
       </div>
@@ -73,7 +73,7 @@ const description = 'ようこそ！'
     <!-- その他 -->
     <a href="/othres" class="card opacity-50">
       <div class="card-content">
-        <div class="card__icon">ℹ️</div>
+        <img src="icon/top/information.svg" class="card__icon" />
         <h3 class="card_name">その他</h3>
         <p class="sub_sentence">このブログについてなど。</p>
       </div>
@@ -102,7 +102,7 @@ const description = 'ようこそ！'
   }
 
   .card__icon {
-    @apply text-3xl mb-1;
+    @apply text-6xl mb-1 h-24 mx-auto dark:invert;
   }
 
   .subbtn-row {
